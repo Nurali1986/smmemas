@@ -170,6 +170,7 @@ if (!prefersReducedMotion && "IntersectionObserver" in window) {
     ".problem-card",
     ".advantage-lead, .advantage-list article",
     ".offer-copy, .offer-includes",
+    ".process-step",
     ".xcard",
     ".team-card, .team-note",
     ".faq-intro, .faq-list details",
