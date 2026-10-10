@@ -26,3 +26,4 @@ body{font-size:16px}.announcement{font-size:11px}.main-nav{font-size:14px}.eyebr
 .hero-art{background-image:linear-gradient(180deg,rgba(18,11,28,.04) 34%,rgba(18,11,28,.46)),url("./hero-2.jpg");background-position:center,48% 30%}
 .advantages h2::after{background-image:linear-gradient(0deg,rgba(20,13,28,.12),rgba(20,13,28,.02)),url("./instagram-2.jpg")}
 .team-avatar{width:88px;height:88px;overflow:hidden;border:2px solid var(--violet)}.team-avatar img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.packages-head::after{display:none}.package-line a{color:inherit;text-decoration:underline;text-underline-offset:3px}
