@@ -76,6 +76,15 @@ sampleTabs.forEach((tab) => {
   });
 });
 
+const packageSelect = document.querySelector("#clinic-package");
+
+document.querySelectorAll("[data-package]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (packageSelect) packageSelect.value = button.dataset.package;
+    trackGoal("package_click");
+  });
+});
+
 const leadForm = document.querySelector("#lead-form");
 const formStatus = document.querySelector("#form-status");
 const formPrivacy = document.querySelector("#form-privacy");
@@ -86,6 +95,7 @@ const formText = isRussian
       greeting: "Здравствуйте! Хочу получить бесплатный пример (2 видео и 3 карусели) для нашей клиники.",
       name: "Имя и клиника",
       focus: "Направление",
+      package: "Пакет",
       contact: "Контакт",
       privacy: "Заявка придёт нам напрямую. Мы свяжемся с вами в течение рабочего дня.",
       sending: "Отправляем…",
@@ -97,6 +107,7 @@ const formText = isRussian
       greeting: "Assalomu alaykum! Klinikamiz uchun bepul namuna (2 ta video va 3 ta karusel) so‘ramoqchiman.",
       name: "Ism va klinika",
       focus: "Yo‘nalish",
+      package: "Paket",
       contact: "Bog‘lanish uchun",
       privacy: "So‘rovingiz to‘g‘ridan-to‘g‘ri bizga keladi. Bir ish kuni ichida bog‘lanamiz.",
       sending: "Yuborilmoqda…",
@@ -116,6 +127,7 @@ leadForm.addEventListener("submit", async (event) => {
   const lead = {
     name: formData.get("name"),
     focus: formData.get("focus"),
+    package: formData.get("package") || "",
     contact: formData.get("contact"),
     lang: isRussian ? "ru" : "uz",
   };
@@ -123,8 +135,11 @@ leadForm.addEventListener("submit", async (event) => {
     formText.greeting,
     `${formText.name}: ${lead.name}`,
     `${formText.focus}: ${lead.focus}`,
+    lead.package && `${formText.package}: ${lead.package}`,
     `${formText.contact}: ${lead.contact}`,
-  ].join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
   const openTelegram = () => {
     window.open(`https://t.me/${telegramPhone}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   };
@@ -169,6 +184,7 @@ if (!prefersReducedMotion && "IntersectionObserver" in window) {
     ".section-photo",
     ".problem-card",
     ".advantage-lead, .advantage-list article",
+    ".tariff",
     ".offer-copy, .offer-includes",
     ".process-step",
     ".xcard",
