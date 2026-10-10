@@ -1,4 +1,7 @@
 const telegramPhone = "+998994428358";
+// Lidlarni qabul qiladigan manzil (masalan, Formspree: "https://formspree.io/f/xxxxxxxx").
+// Bo‘sh bo‘lsa, forma faqat Telegram’da tayyor xabarni ochadi.
+const formEndpoint = "";
 const metrikaId = "";
 
 const trackGoal = (goal) => {
@@ -42,14 +45,14 @@ const navigation = document.querySelector(".main-nav");
 menuButton.addEventListener("click", () => {
   const isOpen = menuButton.getAttribute("aria-expanded") === "true";
   menuButton.setAttribute("aria-expanded", String(!isOpen));
-  menuButton.setAttribute("aria-label", isOpen ? "Menyuni ochish" : "Menyuni yopish");
+  menuButton.setAttribute("aria-label", isOpen ? menuButton.dataset.openLabel : menuButton.dataset.closeLabel);
   navigation.classList.toggle("is-open", !isOpen);
 });
 
 navigation.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => {
     menuButton.setAttribute("aria-expanded", "false");
-    menuButton.setAttribute("aria-label", "Menyuni ochish");
+    menuButton.setAttribute("aria-label", menuButton.dataset.openLabel);
     navigation.classList.remove("is-open");
   });
 });
@@ -75,22 +78,82 @@ sampleTabs.forEach((tab) => {
 
 const leadForm = document.querySelector("#lead-form");
 const formStatus = document.querySelector("#form-status");
+const formPrivacy = document.querySelector("#form-privacy");
+const isRussian = document.documentElement.lang === "ru";
 
-leadForm.addEventListener("submit", (event) => {
+const formText = isRussian
+  ? {
+      greeting: "Здравствуйте! Хочу получить 5 бесплатных примеров для нашей клиники.",
+      name: "Имя и клиника",
+      focus: "Направление",
+      contact: "Контакт",
+      privacy: "Заявка придёт нам напрямую. Мы свяжемся с вами в течение рабочего дня.",
+      sending: "Отправляем…",
+      sent: "Заявка отправлена. Мы свяжемся с вами в течение рабочего дня.",
+      fallback: "Не удалось отправить заявку. Открыли готовое сообщение в Telegram — нажмите «Отправить».",
+      opened: "Сообщение открыто в Telegram. Нажмите «Отправить».",
+    }
+  : {
+      greeting: "Assalomu alaykum! Klinikamiz uchun 5 ta bepul namunani so‘ramoqchiman.",
+      name: "Ism va klinika",
+      focus: "Yo‘nalish",
+      contact: "Bog‘lanish uchun",
+      privacy: "So‘rovingiz to‘g‘ridan-to‘g‘ri bizga keladi. Bir ish kuni ichida bog‘lanamiz.",
+      sending: "Yuborilmoqda…",
+      sent: "So‘rovingiz yuborildi. Bir ish kuni ichida bog‘lanamiz.",
+      fallback: "So‘rovni yuborib bo‘lmadi. Tayyor xabar Telegram’da ochildi — Yuborish tugmasini bosing.",
+      opened: "Xabar Telegram’da ochildi. Yuborish tugmasini bosing.",
+    };
+
+if (formEndpoint && formPrivacy) formPrivacy.textContent = formText.privacy;
+
+leadForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   if (!leadForm.reportValidity()) return;
 
   const formData = new FormData(leadForm);
+  const lead = {
+    name: formData.get("name"),
+    focus: formData.get("focus"),
+    contact: formData.get("contact"),
+    lang: isRussian ? "ru" : "uz",
+  };
   const message = [
-    "Assalomu alaykum! Klinikamiz uchun 5 ta bepul namunani so‘ramoqchiman.",
-    `Ism va klinika: ${formData.get("name")}`,
-    `Yo‘nalish: ${formData.get("focus")}`,
-    `Bog‘lanish uchun: ${formData.get("contact")}`,
+    formText.greeting,
+    `${formText.name}: ${lead.name}`,
+    `${formText.focus}: ${lead.focus}`,
+    `${formText.contact}: ${lead.contact}`,
   ].join("\n");
-  const telegramUrl = `https://t.me/${telegramPhone}?text=${encodeURIComponent(message)}`;
+  const openTelegram = () => {
+    window.open(`https://t.me/${telegramPhone}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  };
 
   trackGoal("form_submit");
-  window.open(telegramUrl, "_blank", "noopener,noreferrer");
-  formStatus.textContent = "Xabar Telegram’da ochildi. Yuborish tugmasini bosing.";
+
+  if (!formEndpoint) {
+    openTelegram();
+    formStatus.textContent = formText.opened;
+    return;
+  }
+
+  const submitButton = leadForm.querySelector('[type="submit"]');
+  submitButton.disabled = true;
+  formStatus.textContent = formText.sending;
+
+  try {
+    const response = await fetch(formEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(lead),
+    });
+    if (!response.ok) throw new Error(`Form endpoint returned ${response.status}`);
+    leadForm.reset();
+    formStatus.textContent = formText.sent;
+  } catch (error) {
+    openTelegram();
+    formStatus.textContent = formText.fallback;
+  } finally {
+    submitButton.disabled = false;
+  }
 });
