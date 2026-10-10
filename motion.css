@@ -34,17 +34,19 @@
 @keyframes ecg{0%{stroke-dashoffset:900;opacity:1}70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 
 /* Fondagi xira tibbiy belgilar */
-.advantages,.contact{position:relative;overflow:hidden}
-.advantages>.section-wrap,.contact>.section-wrap{position:relative;z-index:1}
+.problem,.advantages,.offer,.packages,.team,.faq,.contact{position:relative;overflow:hidden}
+.problem>.section-wrap,.advantages>.section-wrap,.offer>.section-wrap,.packages>.section-wrap,.team>.section-wrap,.faq>.section-wrap,.contact>.section-wrap{position:relative;z-index:1}
 .hero>*:not(.med-bg){position:relative;z-index:1}
 .med-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.med-bg span{position:absolute;color:rgba(165,107,255,.13);font-size:46px;animation:drift 14s ease-in-out infinite}
-.med-bg span:nth-child(1){left:4%;top:12%}
+.med-bg span{position:absolute;color:rgba(165,107,255,.2);font-size:46px;animation:drift 14s ease-in-out infinite}
+.med-bg span:nth-child(1){left:2%;top:3%}
 .med-bg span:nth-child(2){left:42%;top:4%;font-size:30px;animation-delay:-3s}
 .med-bg span:nth-child(3){right:6%;bottom:10%;font-size:64px;animation-delay:-6s}
 .med-bg span:nth-child(4){left:46%;bottom:6%;font-size:34px;animation-delay:-9s}
 .med-bg span:nth-child(5){right:38%;top:44%;font-size:26px;animation-delay:-11s}
-.hero .med-bg span{color:rgba(165,107,255,.1)}
+.hero .med-bg span{color:rgba(165,107,255,.16)}
+.problem .med-bg span,.packages .med-bg span,.team .med-bg span{color:rgba(116,64,215,.16)}
+.offer .med-bg span{color:rgba(255,255,255,.2)}
 @keyframes drift{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(12px,-18px) rotate(12deg)}66%{transform:translate(-10px,10px) rotate(-8deg)}}
 
 /* Muammo kartalari */
