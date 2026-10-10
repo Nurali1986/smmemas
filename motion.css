@@ -34,8 +34,8 @@
 @keyframes ecg{0%{stroke-dashoffset:900;opacity:1}70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 
 /* Fondagi xira tibbiy belgilar */
-.problem,.advantages,.offer,.packages,.team,.faq,.contact{position:relative;overflow:hidden}
-.problem>.section-wrap,.advantages>.section-wrap,.offer>.section-wrap,.packages>.section-wrap,.team>.section-wrap,.faq>.section-wrap,.contact>.section-wrap{position:relative;z-index:1}
+.problem,.advantages,.offer,.process,.packages,.team,.faq,.contact{position:relative;overflow:hidden}
+.problem>.section-wrap,.advantages>.section-wrap,.process>.section-wrap,.offer>.section-wrap,.packages>.section-wrap,.team>.section-wrap,.faq>.section-wrap,.contact>.section-wrap{position:relative;z-index:1}
 .hero>*:not(.med-bg){position:relative;z-index:1}
 .med-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .med-bg span{position:absolute;color:rgba(165,107,255,.2);font-size:46px;animation:drift 14s ease-in-out infinite}
