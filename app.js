@@ -83,7 +83,7 @@ const isRussian = document.documentElement.lang === "ru";
 
 const formText = isRussian
   ? {
-      greeting: "Здравствуйте! Хочу получить 5 бесплатных примеров для нашей клиники.",
+      greeting: "Здравствуйте! Хочу получить бесплатный пример (2 видео и 3 карусели) для нашей клиники.",
       name: "Имя и клиника",
       focus: "Направление",
       contact: "Контакт",
@@ -94,7 +94,7 @@ const formText = isRussian
       opened: "Сообщение открыто в Telegram. Нажмите «Отправить».",
     }
   : {
-      greeting: "Assalomu alaykum! Klinikamiz uchun 5 ta bepul namunani so‘ramoqchiman.",
+      greeting: "Assalomu alaykum! Klinikamiz uchun bepul namuna (2 ta video va 3 ta karusel) so‘ramoqchiman.",
       name: "Ism va klinika",
       focus: "Yo‘nalish",
       contact: "Bog‘lanish uchun",

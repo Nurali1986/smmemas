@@ -21,3 +21,7 @@ body{font-size:16px}.announcement{font-size:11px}.main-nav{font-size:14px}.eyebr
 .flow-line{grid-template-columns:repeat(3,1fr)}.advantage-list .advantage-lead{font-size:16px;line-height:1.7;color:#d6cedd;margin:0 0 22px;max-width:520px}.nav-lang{font-weight:700;letter-spacing:.08em;opacity:.8}.nav-lang:hover{opacity:1}
 @media(min-width:641px){.system-grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1101px){.problem-grid{grid-template-columns:repeat(4,1fr)}}@media(min-width:901px) and (max-width:1100px){.problem-grid{grid-template-columns:repeat(2,1fr)}}
+
+.offer-includes::after,.faq-layout>div:first-child::after{display:none}
+.hero-art{background-image:linear-gradient(180deg,rgba(18,11,28,.04) 34%,rgba(18,11,28,.46)),url("./hero-2.jpg");background-position:center,48% 30%}
+.advantages h2::after{background-image:linear-gradient(0deg,rgba(20,13,28,.12),rgba(20,13,28,.02)),url("./instagram-2.jpg")}
