@@ -157,3 +157,66 @@ leadForm.addEventListener("submit", async (event) => {
     submitButton.disabled = false;
   }
 });
+
+// Skroll paytida bo‘limlarni silliq ko‘rsatish
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (!prefersReducedMotion && "IntersectionObserver" in window) {
+  const revealGroups = [
+    ".section-kicker",
+    "main h2",
+    ".problem-head p, .packages-head p",
+    ".section-photo",
+    ".problem-card",
+    ".advantage-lead, .advantage-list article",
+    ".offer-copy, .offer-includes",
+    ".xcard",
+    ".team-card, .team-note",
+    ".faq-intro, .faq-list details",
+    ".contact-copy > *:not(.section-kicker):not(h2), .lead-form",
+  ];
+
+  revealGroups.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      if (element.closest(".hero")) return;
+      element.classList.add("reveal");
+      element.style.setProperty("--d", `${Math.min(index, 5) * 0.09}s`);
+    });
+  });
+
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+  document.documentElement.classList.add("motion-ready");
+
+  // Narxni 0 dan sanab chiqarish
+  const priceElement = document.querySelector(".offer-count");
+  const priceNode = priceElement && priceElement.firstChild;
+  const priceMatch = priceNode && priceNode.nodeType === Node.TEXT_NODE && priceNode.textContent.match(/^(\D*)(\d+)$/);
+
+  if (priceMatch) {
+    const [, prefix, target] = priceMatch;
+    const priceObserver = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting) return;
+      priceObserver.disconnect();
+      const start = performance.now();
+      const tick = (now) => {
+        const progress = Math.min((now - start) / 1400, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        priceNode.textContent = prefix + Math.round(Number(target) * eased);
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.5 });
+    priceObserver.observe(priceElement);
+  }
+}
